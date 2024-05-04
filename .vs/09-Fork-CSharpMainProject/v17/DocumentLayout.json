@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "F:\\Unity-Projects\\09-Fork-CSharpMainProject\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{95871E4A-45A0-1BA0-9A80-407C72F5E0BF}|Root.csproj|f:\\unity-projects\\09-fork-csharpmainproject\\assets\\scripts\\enterpoint.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{95871E4A-45A0-1BA0-9A80-407C72F5E0BF}|Root.csproj|solutionrelative:assets\\scripts\\enterpoint.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{95871E4A-45A0-1BA0-9A80-407C72F5E0BF}|Root.csproj|f:\\unity-projects\\09-fork-csharpmainproject\\assets\\scripts\\controller\\botcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{95871E4A-45A0-1BA0-9A80-407C72F5E0BF}|Root.csproj|solutionrelative:assets\\scripts\\controller\\botcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
@@ -10,7 +14,7 @@
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
-      "VerticalTabListWidth": 256,
+      "VerticalTabListWidth": 275,
       "DocumentGroups": [
         {
           "DockedWidth": 200,
@@ -18,20 +22,37 @@
           "Children": [
             {
               "$type": "Bookmark",
-              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+              "Name": "ST:0:0:{93c5e7ad-af06-49e6-a756-b8f3eaca790d}"
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "EnterPoint.cs",
+              "DocumentMoniker": "F:\\Unity-Projects\\09-Fork-CSharpMainProject\\Assets\\Scripts\\EnterPoint.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\EnterPoint.cs",
+              "ToolTip": "F:\\Unity-Projects\\09-Fork-CSharpMainProject\\Assets\\Scripts\\EnterPoint.cs",
+              "RelativeToolTip": "Assets\\Scripts\\EnterPoint.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAgAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-04T18:10:06.267Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "BotController.cs",
               "DocumentMoniker": "F:\\Unity-Projects\\09-Fork-CSharpMainProject\\Assets\\Scripts\\Controller\\BotController.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Controller\\BotController.cs",
               "ToolTip": "F:\\Unity-Projects\\09-Fork-CSharpMainProject\\Assets\\Scripts\\Controller\\BotController.cs",
               "RelativeToolTip": "Assets\\Scripts\\Controller\\BotController.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAAQAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAB4AAAAdAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-05-04T13:24:13.673Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
             }
           ]
         }
