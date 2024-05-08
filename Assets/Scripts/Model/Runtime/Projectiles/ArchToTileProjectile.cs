@@ -36,7 +36,7 @@ namespace Model.Runtime.Projectiles
             t--;
             float u = -t * t;
             u++;
-            Debug.Log(u);
+            //Debug.Log(u);
 
             localHeight = maxHeight * u;          
 

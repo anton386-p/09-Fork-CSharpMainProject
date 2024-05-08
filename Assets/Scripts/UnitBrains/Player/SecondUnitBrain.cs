@@ -12,15 +12,85 @@ namespace UnitBrains.Player
         private float _temperature = 0f;
         private float _cooldownTime = 0f;
         private bool _overheated;
-        
+
         protected override void GenerateProjectiles(Vector2Int forTarget, List<BaseProjectile> intoList)
         {
             float overheatTemperature = OverheatTemperature;
             ///////////////////////////////////////
             // Homework 1.3 (1st block, 3rd module)
             ///////////////////////////////////////           
-            var projectile = CreateProjectile(forTarget);
-            AddProjectileToList(projectile, intoList);
+            
+            GetTemperature();
+
+            if (_temperature > OverheatTemperature)
+            {
+                Debug.Log("_temperature > OverheatTemperature (ostyvanie).");
+            }
+            
+            else
+            {
+                int PNomerVystrela;
+
+                if (_temperature < 1)
+                {
+                    PNomerVystrela = 1;
+                }
+                else if (_temperature < 2)
+                {
+                    PNomerVystrela = 2;
+                }
+                else
+                {
+                    PNomerVystrela = 3;
+                }
+
+                void MVyletOdnogoSnaryada()
+                {
+                    var projectile = CreateProjectile(forTarget);
+                    AddProjectileToList(projectile, intoList);
+                }
+
+                switch (PNomerVystrela)
+                {
+                    case 1:
+                        Debug.Log("Temperatura pered vystrelom:");
+                        Debug.Log(_temperature);
+                        Debug.Log("Kolichestvo snaryadov v vystrele: 1.");
+                        MVyletOdnogoSnaryada();
+                        IncreaseTemperature();
+                        Debug.Log("Temperatura posle vystrela:");
+                        Debug.Log(_temperature);
+                        Debug.Log("---------------------------------------------------------------");
+                        break;
+                    case 2:
+                        Debug.Log("Temperatura pered vystrelom:");
+                        Debug.Log(_temperature);
+                        Debug.Log("Kolichestvo snaryadov v vystrele: 2.");
+                        MVyletOdnogoSnaryada();
+                        MVyletOdnogoSnaryada();
+                        IncreaseTemperature();
+                        Debug.Log("Temperatura posle vystrela:");
+                        Debug.Log(_temperature);
+                        Debug.Log("---------------------------------------------------------------");
+                        break;
+                    case 3:
+                        Debug.Log("Temperatura pered vystrelom:");
+                        Debug.Log(_temperature);
+                        Debug.Log("Kolichestvo snaryadov v vystrele: 3.");
+                        MVyletOdnogoSnaryada();
+                        MVyletOdnogoSnaryada();
+                        MVyletOdnogoSnaryada();
+                        IncreaseTemperature();
+                        Debug.Log("Temperatura posle vystrela:");
+                        Debug.Log(_temperature);
+                        Debug.Log("---------------------------------------------------------------");
+                        break;  
+                    default:
+                        Debug.Log("Default (vystrela net).");
+                        break;
+                }                
+            }
+
             ///////////////////////////////////////
         }
 
@@ -46,9 +116,9 @@ namespace UnitBrains.Player
         public override void Update(float deltaTime, float time)
         {
             if (_overheated)
-            {              
+            {
                 _cooldownTime += Time.deltaTime;
-                float t = _cooldownTime / (OverheatCooldown/10);
+                float t = _cooldownTime / (OverheatCooldown / 10);
                 _temperature = Mathf.Lerp(OverheatTemperature, 0, t);
                 if (t >= 1)
                 {
@@ -60,7 +130,7 @@ namespace UnitBrains.Player
 
         private int GetTemperature()
         {
-            if(_overheated) return (int) OverheatTemperature;
+            if (_overheated) return (int)OverheatTemperature;
             else return (int)_temperature;
         }
 
