@@ -19,7 +19,34 @@ namespace UnitBrains.Player
             ///////////////////////////////////////
             // Homework 1.3 (1st block, 3rd module)
             ///////////////////////////////////////           
-            
+
+            /*/
+            Versiya 2 (nachalo)
+            /*/
+
+            int PTemperatura = GetTemperature(); // Uznat' temperaturu (iz metoda) i zapisat' ee (v peremennuyu).
+
+            if (PTemperatura >= OverheatTemperature) return; // Proverit', peregrelos' li oruzhie.
+
+            for (int i = 0; i <= PTemperatura; i++) // Ot kolichestva tsiklov zavisit kolichestvo snaryadov v odnom vystrele.
+            {
+                var projectile = CreateProjectile(forTarget);
+                AddProjectileToList(projectile, intoList);
+            }
+
+            IncreaseTemperature(); // Posle kazhdogo vystrela uvelichit' temperaturu.
+
+            Debug.Log($"Temperatura pered vystrelom: {PTemperatura}. Kolichestvo snaryadov v vystrele: {PTemperatura + 1}");
+
+            /*/
+            Versiya 2 (konets)
+            /*/
+
+            /*/
+            Versiya 1 (nachalo)
+            /*/
+
+            /*/
             GetTemperature();
 
             if (_temperature > OverheatTemperature)
@@ -90,6 +117,11 @@ namespace UnitBrains.Player
                         break;
                 }                
             }
+            /*/
+
+            /*/
+            Versiya 1 (konets)
+            /*/
 
             ///////////////////////////////////////
         }
