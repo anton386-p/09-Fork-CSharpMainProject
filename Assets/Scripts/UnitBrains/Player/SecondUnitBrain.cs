@@ -23,7 +23,7 @@ namespace UnitBrains.Player
             /*/
             Versiya 2 (nachalo)
             /*/
-
+            
             int PTemperatura = GetTemperature(); // Uznat' temperaturu (iz metoda) i zapisat' ee (v peremennuyu).
 
             if (PTemperatura >= OverheatTemperature) return; // Proverit', peregrelos' li oruzhie.
@@ -36,8 +36,8 @@ namespace UnitBrains.Player
 
             IncreaseTemperature(); // Posle kazhdogo vystrela uvelichit' temperaturu.
 
-            Debug.Log($"Temperatura pered vystrelom: {PTemperatura}. Kolichestvo snaryadov v vystrele: {PTemperatura + 1}");
-
+            // Debug.Log($"Temperatura pered vystrelom: {PTemperatura}. Kolichestvo snaryadov v vystrele: {PTemperatura + 1}");
+            
             /*/
             Versiya 2 (konets)
             /*/
@@ -137,10 +137,43 @@ namespace UnitBrains.Player
             // Homework 1.4 (1st block, 4rd module)
             ///////////////////////////////////////
             List<Vector2Int> result = GetReachableTargets();
+
+            // * * *
+
+            float pTekuscheeNaimensheeRasstoyanie = float.MaxValue;
+
+            Vector2Int pBlizhajshayaTsel = Vector2Int.zero;
+
+            foreach (Vector2Int i in result)
+            {
+                float pRasstoyanieDoBazy = DistanceToOwnBase(i);
+
+                if (pRasstoyanieDoBazy < pTekuscheeNaimensheeRasstoyanie)
+                {
+                    pTekuscheeNaimensheeRasstoyanie = pRasstoyanieDoBazy;
+                    pBlizhajshayaTsel = i;
+                }
+
+            }
+            // Debug.Log(pTekuscheeNaimensheeRasstoyanie);
+            
+            if (pBlizhajshayaTsel != Vector2Int.zero)
+            {
+                Debug.Log($"_________________________ Koordinaty blizhajshej tseli: {pBlizhajshayaTsel}.");
+                result.Clear();
+                result.Add(pBlizhajshayaTsel);
+                Debug.Log("_________________________ Blizhajshaya tsel' vybrana.");
+            }
+            
+            /*/
             while (result.Count > 1)
             {
                 result.RemoveAt(result.Count - 1);
             }
+            /*/            
+
+            // * * *
+
             return result;
             ///////////////////////////////////////
         }
