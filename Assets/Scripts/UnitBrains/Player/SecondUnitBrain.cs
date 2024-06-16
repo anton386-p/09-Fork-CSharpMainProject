@@ -184,13 +184,16 @@ namespace UnitBrains.Player
             ///////////////////////////////////////
             // Homework 1.4 (1st block, 4rd module)
             ///////////////////////////////////////
-            
+
             #region ---------------------------------------- 1. ПОЛУЧИТЬ ВСЕ ЦЕЛИ ----------------------------------------
 
             // ДЗ 6 - Начало.
             // List<Vector2Int> result = GetReachableTargets();
             // ДЗ 6 - "1. Вместо достижимых целей получи все с помощью метода GetAllTargets()".
-            List<Vector2Int> result = new List<Vector2Int>();
+            // Отзыв к ДЗ 7 - "a. Для начала произведем поиск целей. Очистим список текущих целей, добавленный в прошлом
+            // домашнем задании."
+            //List<Vector2Int> result = new List<Vector2Int>();
+            List<Vector2Int> result = new ();
             // Отзыв к ДЗ 6 - "Например, вот этот блок можно в принципе исключить:"
             /*/
             foreach (Vector2Int v in GetAllTargets())
@@ -204,109 +207,148 @@ namespace UnitBrains.Player
 
             // ДЗ 4 - Начало.
             // ДЗ 4 - "1. Определи какая из целей в result находится ближе всего к нашей базе. Используй подход, который мы разобрали в уроке «Подготовка к домашнему заданию»".
+            // Для отзыва к ДЗ 7.
+            //float pTekuscheeNaimensheeRasstoyanie = float.MaxValue;
+            // Для отзыва к ДЗ 7.
+            //Vector2Int pBlizhajshayaTsel = Vector2Int.zero;
 
-            float pTekuscheeNaimensheeRasstoyanie = float.MaxValue;
-
-            Vector2Int pBlizhajshayaTsel = Vector2Int.zero;
+            // Отзыв к ДЗ 7 - "Пройдемся по всем целям и добавим их заново в очищенный список."
+            PolSpTseli_SamyeOpasnye.Clear();
 
             // Отзыв к ДЗ 6 - "Для этого, мы прямо вот тут можем вызвать метод GetAllTargets():"
             // foreach (Vector2Int i in result)
             foreach (Vector2Int i in GetAllTargets())
             {
                 // ДЗ 4. 2. Для определения расстояния от конкретной цели до нашей базы, используй метод DistanceToOwnBase. Ты не увидишь его реализации в этом скрипте, но не волнуйся, это не помешает тебе его вызвать. Этот метод принимает цель, расстояние от которой до базы мы хотим узнать, а возвращает как раз это расстояние.
+                // Для отзыва к ДЗ 7.
+                /*/
                 float pRasstoyanieDoBazy = DistanceToOwnBase(i);
                 if (pRasstoyanieDoBazy < pTekuscheeNaimensheeRasstoyanie)
                 {
                     pTekuscheeNaimensheeRasstoyanie = pRasstoyanieDoBazy;
                     pBlizhajshayaTsel = i;
                 }
+                /*/
+                PolSpTseli_SamyeOpasnye.Add(i);
             }
             // Debug.Log(pTekuscheeNaimensheeRasstoyanie);
 
-            #endregion --------------------------------------------------------------------------------
-            #region ---------------------------- 3. БЛИЖАЙШУЮ ЦЕЛЬ ДОБАВИТЬ В СПИСОК ОПАСНЫХ ЦЕЛЕЙ ----------------------------
-            
-            // ДЗ 6 - "b. Записываем самую опасную цель в эту коллекцию."
-            PolSpTseli_SamyeOpasnye.Clear();
-            PolSpTseli_SamyeOpasnye.Add(pBlizhajshayaTsel);
-            Debug.Log("_________________________ Ближайшая цель добавлена.");
-
-            #endregion --------------------------------------------------------------------------------
-
-            /*/
-            // ДЗ 4 - "3. После того как ты найдешь ближайшую к базе цель, в том случае если она действительно была найдена, очисти список result и добавь в него эту цель".
-            // if (pBlizhajshayaTsel != Vector2Int.zero)
-            // Отзыв к ДЗ 4 - "Тут вы выполняете проверку условием и лучше его задать так: if (pTekuscheeNaimensheeRasstoyanie < float.MaxValue). Так мы точно избавимся от ситуации, что цель не была найдена по какой-то причине и добавим в лист требуемый результат".
-            if (pTekuscheeNaimensheeRasstoyanie < float.MaxValue)
+            // Отзыв к ДЗ 7 - "b. Если в списке целей никого нет, то добавляем в список базу противника."
+            if (PolSpTseli_SamyeOpasnye.Count == 0)
             {
-                Debug.Log($"_________________________ Координаты ближайшей цели: {pBlizhajshayaTsel}.");
-                result.Clear();
-                result.Add(pBlizhajshayaTsel);
-                Debug.Log("_________________________ Ближайшая цель добавлена.");
+                PolSpTseli_SamyeOpasnye.Add(runtimeModel.RoMap.Bases[IsPlayerUnitBrain ? RuntimeModel.BotPlayerId : RuntimeModel.PlayerId]);
             }
-            /*/
 
-            if (PolSpTseli_SamyeOpasnye.Count > 0)
+            // Отзыв к ДЗ 7 - "c. Производим сортировку целей по дистанции. Для этого вызовем метод сортировки
+            // SortByDistanceToOwnBase(List) и передадим туда список целей."
+            SortByDistanceToOwnBase(PolSpTseli_SamyeOpasnye);
+
+            // Отзыв к ДЗ 7 - "d. Рассчитаем номер текущего юнита и определим, цель под каким номером следует бить. Например,
+            // если цель одна, а номер юнита 3, цель выбирается первая (т.е. 0)."
+            int _pTsel_Nomer = _pYunit_Nomer % _pUmnyjVybor_Maksimum;
+            int bestTargetNum = Mathf.Min(_pTsel_Nomer, PolSpTseli_SamyeOpasnye.Count - 1);
+            Vector2Int pTselDlyaYunita = PolSpTseli_SamyeOpasnye[bestTargetNum];
+
+            // Отзыв к ДЗ 7 - "e. Проверяем, что цель в радиусе атаки и добавляем в результат, если это так."
+            if (IsTargetInRange(pTselDlyaYunita))
             {
-                #region ------------------------------------ 4. ОТСОРТИРОВАТЬ ОПАСНЫЕ ЦЕЛИ ------------------------------------
-
-                // ДЗ 7 - "c. Производим сортировку целей по дистанции.
-                // "Для этого вызовем метод сортировки SortByDistanceToOwnBase(List) и передадим туда список целей."
-                SortByDistanceToOwnBase(PolSpTseli_SamyeOpasnye);
+                result.Add(pTselDlyaYunita);
+                Debug.Log("_________________________ Ближайше-опасная цель выбрана.");
+            }
 
                 #endregion --------------------------------------------------------------------------------
-                #region ------------------------------------ 5. РАССЧИТАТЬ И ОПРЕДЕЛИТЬ ------------------------------------
+                #region ---------------------------- 3. БЛИЖАЙШУЮ ЦЕЛЬ ДОБАВИТЬ В СПИСОК ОПАСНЫХ ЦЕЛЕЙ ----------------------------
 
-                // ДЗ 7
-                // "d. Рассчитаем номер текущего юнита и определим, цель под каким номером следует бить."
-                // Debug.Log($"_________________________ {_pYunit_Nomer}.");
-                var v = PolSpTseli_SamyeOpasnye.Take(_pUmnyjVybor_Maksimum);
-                int _pTsel_Nomer = _pYunit_Nomer % v.Count();
-                Vector2Int pTselDlyaYunita = PolSpTseli_SamyeOpasnye[_pTsel_Nomer];
+                // ДЗ 6 - "b. Записываем самую опасную цель в эту коллекцию."
+                // Для отзыва к ДЗ 7.
+                /*/
+                PolSpTseli_SamyeOpasnye.Clear();
+                PolSpTseli_SamyeOpasnye.Add(pBlizhajshayaTsel);
+                Debug.Log("_________________________ Ближайшая цель добавлена.");
+                /*/
 
                 #endregion --------------------------------------------------------------------------------
-                #region ------------------------------ 6. ОПРЕДЕЛИТЬ ДОСЯГАЕМОСТЬ БЛИЖАЙШЕЙ ЦЕЛИ ------------------------------
-                #endregion --------------------------------------------------------------------------------
 
-                // ДЗ 6 - "Если цель в зоне досягаемости, то добавляем в result."
-                //if (IsTargetInRange(PolSpTseli_SamyeOpasnye[0]))
-
-                // ДЗ 7
-                if (IsTargetInRange(pTselDlyaYunita))
+                /*/
+                // ДЗ 4 - "3. После того как ты найдешь ближайшую к базе цель, в том случае если она действительно была найдена, очисти список result и добавь в него эту цель".
+                // if (pBlizhajshayaTsel != Vector2Int.zero)
+                // Отзыв к ДЗ 4 - "Тут вы выполняете проверку условием и лучше его задать так: if (pTekuscheeNaimensheeRasstoyanie < float.MaxValue). Так мы точно избавимся от ситуации, что цель не была найдена по какой-то причине и добавим в лист требуемый результат".
+                if (pTekuscheeNaimensheeRasstoyanie < float.MaxValue)
                 {
-                    #region ------------------------------ 7. ВЕРНУТЬ ДОСЯГАЕМУЮ БЛИЖАЙШУЮ ЦЕЛЬ ------------------------------
+                    Debug.Log($"_________________________ Координаты ближайшей цели: {pBlizhajshayaTsel}.");
+                    result.Clear();
+                    result.Add(pBlizhajshayaTsel);
+                    Debug.Log("_________________________ Ближайшая цель добавлена.");
+                }
+                /*/
 
-                    // Отзыв к ДЗ 6 - "Соответственно, после этого нам не придется выполнять операцию очистки листа result, вот тут:"
-                    // result.Clear();
-                    //result.Add(PolSpTseli_SamyeOpasnye[0]);
+                // Для отзыва к ДЗ 7.
+                /*/
+                if (PolSpTseli_SamyeOpasnye.Count > 0)
+                {
+                    #region ------------------------------------ 4. ОТСОРТИРОВАТЬ ОПАСНЫЕ ЦЕЛИ ------------------------------------
+
+                    // ДЗ 7 - "c. Производим сортировку целей по дистанции.
+                    // "Для этого вызовем метод сортировки SortByDistanceToOwnBase(List) и передадим туда список целей."
+                    SortByDistanceToOwnBase(PolSpTseli_SamyeOpasnye);
+
+                    #endregion --------------------------------------------------------------------------------
+                    #region ------------------------------------ 5. РАССЧИТАТЬ И ОПРЕДЕЛИТЬ ------------------------------------
 
                     // ДЗ 7
-                    result.Add(pTselDlyaYunita);
+                    // "d. Рассчитаем номер текущего юнита и определим, цель под каким номером следует бить."
+                    // Debug.Log($"_________________________ {_pYunit_Nomer}.");
+                    var v = PolSpTseli_SamyeOpasnye.Take(_pUmnyjVybor_Maksimum);
+                    int _pTsel_Nomer = _pYunit_Nomer % v.Count();
+                    Vector2Int pTselDlyaYunita = PolSpTseli_SamyeOpasnye[_pTsel_Nomer];
 
-                    Debug.Log("_________________________ Ближайше-опасная цель выбрана.");
-                    
+                    #endregion --------------------------------------------------------------------------------
+                    #region ------------------------------ 6. ОПРЕДЕЛИТЬ ДОСЯГАЕМОСТЬ БЛИЖАЙШЕЙ ЦЕЛИ ------------------------------
+                    #endregion --------------------------------------------------------------------------------
+
+                    // ДЗ 6 - "Если цель в зоне досягаемости, то добавляем в result."
+                    //if (IsTargetInRange(PolSpTseli_SamyeOpasnye[0]))
+
+                    // ДЗ 7
+                    if (IsTargetInRange(pTselDlyaYunita))
+                    {
+                        #region ------------------------------ 7. ВЕРНУТЬ ДОСЯГАЕМУЮ БЛИЖАЙШУЮ ЦЕЛЬ ------------------------------
+
+                        // Отзыв к ДЗ 6 - "Соответственно, после этого нам не придется выполнять операцию очистки листа result, вот тут:"
+                        // result.Clear();
+                        //result.Add(PolSpTseli_SamyeOpasnye[0]);
+
+                        // ДЗ 7
+                        result.Add(pTselDlyaYunita);
+
+                        Debug.Log("_________________________ Ближайше-опасная цель выбрана.");
+
+                        #endregion --------------------------------------------------------------------------------
+                    }
+                }
+                /*/
+                // Для отзыва к ДЗ 7.
+                /*/
+                else
+                {
+                    #region ----------------------------- 8. ПРИ ОТСУТСТВИИ ЦЕЛЕЙ ВЕРНУТЬ БАЗУ ПРОТИВНИКА -----------------------------
+
+                    // ДЗ 6 - "3. Если целей нет, добавляем в цели базу противника."
+                    result.Add(runtimeModel.RoMap.Bases[IsPlayerUnitBrain ? RuntimeModel.BotPlayerId : RuntimeModel.PlayerId]);
+
                     #endregion --------------------------------------------------------------------------------
                 }
-            }
-            else
-            {
-                #region ----------------------------- 8. ПРИ ОТСУТСТВИИ ЦЕЛЕЙ ВЕРНУТЬ БАЗУ ПРОТИВНИКА -----------------------------
+                /*/
 
-                // ДЗ 6 - "3. Если целей нет, добавляем в цели базу противника."
-                result.Add(runtimeModel.RoMap.Bases[IsPlayerUnitBrain ? RuntimeModel.BotPlayerId : RuntimeModel.PlayerId]);
+                /*/
+                while (result.Count > 1)
+                {
+                    result.RemoveAt(result.Count - 1);
+                }
+                /*/
 
-                #endregion --------------------------------------------------------------------------------
-            }
-
-            /*/
-            while (result.Count > 1)
-            {
-                result.RemoveAt(result.Count - 1);
-            }
-            /*/
-
-            // ДЗ 4 - "4. Верни список result".
-            return result;
+                // ДЗ 4 - "4. Верни список result".
+                return result;
             // ДЗ 4 - Конец.
             // ДЗ 6 - Конец.
             // ДЗ 7 - Конец.
